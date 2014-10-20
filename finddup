@@ -24,7 +24,7 @@ class Log():
 def generateFileList(directories):
     rv = []
     for directory in directories:
-        find_out = subprocess.check_output("find " + directory + " -type f -print0", shell=True)
+        find_out = subprocess.check_output("find \"" + directory + "\" -type f -print0", shell=True)
         rv += [i for i in find_out.strip().split("\0") if len(i) > 0]  # clean up, strip
     return rv
 
