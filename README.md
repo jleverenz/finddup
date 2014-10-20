@@ -29,8 +29,15 @@ Get help:
 
         finddup --help
 
-TODO
-----
+Development
+-----------
+
+Run unit tests:
+
+        python -m unittest discover tests/
+
+### TODO
 
 * Replace find shell call with Python-only calls
 * Add -0 support to list files with NULL delimiters (for xargs -0)
+* Protect against duplicates found between soft/hard links

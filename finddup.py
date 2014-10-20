@@ -19,6 +19,34 @@ class Log():
     def log(cls, msg):
         print(msg)
 
+class FileComparer:
+
+    def __init__(self, *args):
+        self.filelist = list(args)
+        self.__comparitor = FileComparer.defaultComparitor
+
+    def addFiles(self, *args):
+        self.filelist += args
+
+    def compare(self):
+        checked = []
+        duplicate_files = []
+        pairs = itertools.combinations(self.filelist, 2)
+        for pair in pairs:
+            if pair[1] in checked:
+                continue
+            if self.__comparitor(pair[1], pair[0]):
+                duplicate_files.append((pair[1], pair[0]))
+                checked.append(pair[1])
+        return duplicate_files
+
+    def compareWith(self, method):
+        self.__comparitor = method
+
+    @staticmethod
+    def defaultComparitor(file1, file2):
+        return filecmp.cmp(file1, file2, shallow=False)
+
 # Use the shell 'find' command to search the input list of directories
 # recusrively, and generate a list of filenames.
 def generateFileList(directories):
@@ -53,35 +81,13 @@ def outputDuplicateFile(duplicates):
 # duplicate files, all but one will be included in the list
 def compareFiles(filelist):
     sizegroup = groupBySize(filelist)
-    files_to_compare = []
-    for i in [i for i in sizegroup.iteritems() if len(i[1]) > 1]:
-        files_to_compare.append(i[1])
+    files_to_compare = [i[1] for i in sizegroup.iteritems() if len(i[1]) > 1]
 
     duplicate_files = []
     for i in files_to_compare:
-        pairs = itertools.combinations(i,2)
-        for pair in pairs:
-            Log.verbose("Comparing " + str(pair))
-            if filecmp.cmp(pair[0], pair[1], shallow=False):
-                duplicate_files.append(pair)
-                outputDuplicateFile(pair)
+        f = FileComparer(*i)
+        dupes = f.compare()
+        duplicate_files += dupes
+        for i in dupes:
+            outputDuplicateFile(i)
     return duplicate_files
-
-#### main
-
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('dirs', nargs='*', default=["."],
-                    help='Directories to recursively search for duplicate files.')
-parser.add_argument('-v', '--verbose', action='store_true',
-                    help='Verbose output')
-args = parser.parse_args()
-
-
-Log.is_verbose = args.verbose
-
-# Generate filelist and run duplicate detector
-filelist = generateFileList(args.dirs)
-duplicate_pairs = compareFiles(filelist)
-
-Log.verbose(str(len(filelist)) + " files examined")
-Log.verbose(str(len(duplicate_pairs)) + " duplicates found")
