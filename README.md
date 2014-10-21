@@ -49,3 +49,4 @@ Run unit tests:
 * Replace find shell call with Python-only calls
 * Add -0 support to list files with NULL delimiters (for xargs -0)
 * Protect against duplicates found between soft/hard links
+* Support operations like moving duplicates without clobbering same filenames?
