@@ -95,6 +95,8 @@ def outputDuplicateFile(duplicates):
 # Return a list of files from filelist that are duplicates. For any group of
 # duplicate files, all but one will be included in the list
 def compareFiles(filelist):
+    # Hash by file size and create files_to_compare, a list of lists of files
+    # with the same size.
     sizegroup = groupBySize(filelist)
     files_to_compare = [i[1] for i in sizegroup.iteritems() if len(i[1]) > 1]
 
