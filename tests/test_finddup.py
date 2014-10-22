@@ -1,6 +1,19 @@
 import unittest
+import argparse
+import StringIO
+import re
 
-from finddup import FileComparer
+from finddup import FileComparer, Log, outputDuplicateFile
+from finddup_app import FinddupApp
+
+class TestOutput(unittest.TestCase):
+    def test_outputDuplicateFile(self):
+        out = StringIO.StringIO()
+        Log.setOutput(out)
+        outputDuplicateFile(('file1', 'file2'))
+
+        # output should reflect file1 (not file2), based on order
+        self.assertTrue(re.compile("file1").match( out.getvalue().strip() ))
 
 class TestFileComparer(unittest.TestCase):
     def testInitialization(self):
@@ -32,8 +45,6 @@ class TestFileComparer(unittest.TestCase):
         f.compareWith(self.compare)
         dups = f.compare()
         self.assertEqual(dups, [('copy/file1', 'dir/file1')])
-
-    # Need to flip -- first found is kept, duplicates are collected
 
     def testCompareWithMultipleMatches(self):
         f = FileComparer('dir/file1', 'dir/file2', 'copy/file1', 'other/file1')

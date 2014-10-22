@@ -1,4 +1,3 @@
-
 **finddup** is a Python script that searches directories for duplicate files
 using the filecmp module. It will print a list of files that have duplicates in
 the fileset, suitable for further action (e.g. use xargs to move/remove).
@@ -12,6 +11,15 @@ Usage
 -----
 
         finddup [-h] [-v] [dirs [dirs ...]]
+
+**finddup** can be provided a list of directories. It will consider the order
+of directories to be a "priority" ordering for selecting original/duplicate
+pairs.  Files selected as original will be from earlier directories in the
+list, and duplicates from the latter directories if possible. Note that due to
+the underlying use of system 'find', that preference for original/duplicate
+listing within any one directory tree is non-deterministic.
+
+=== Examples
 
 Find duplicates recursively in current directory:
 

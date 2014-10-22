@@ -10,14 +10,25 @@ import sys
 # Simple logging class to support --verbose switch
 class Log():
     is_verbose = False
+    of = sys.stdout
+
+    @classmethod
+    def setOutput(cls, of):
+        cls.of = of
+
     @classmethod
     def verbose(cls, msg):
         if cls.is_verbose:
-            print(msg)
+            cls.printl(msg)
 
     @classmethod
     def log(cls, msg):
-        print(msg)
+        cls.printl(msg)
+
+    @classmethod
+    def printl(cls, msg):
+        cls.of.write(msg + "\n")
+        cls.of.flush()
 
 class FileComparer:
 
@@ -32,12 +43,16 @@ class FileComparer:
         checked = []
         duplicate_files = []
         pairs = itertools.combinations(self.filelist, 2)
+
+        # For each pair, we are checking if the second is a duplicate of the
+        # first. This maintains the original preference order.
         for pair in pairs:
+            # Skip if the second has already been determined to be a duplicate
             if pair[1] in checked:
                 continue
             if self.__comparitor(pair[1], pair[0]):
-                duplicate_files.append((pair[1], pair[0]))
-                checked.append(pair[1])
+                duplicate_files.append((pair[1], pair[0])) # duplicate, and original
+                checked.append(pair[1])                    # track duplicates found
         return duplicate_files
 
     def compareWith(self, method):
@@ -69,12 +84,12 @@ def groupBySize(filelist):
     return size_hash
 
 
+# duplicate_original is a tuple with the duplicate listed first
 def outputDuplicateFile(duplicates):
-    msg = duplicates[1]
     if Log.is_verbose:
-        Log.verbose(duplicates[1] + " (dupe of " + duplicates[0] + ")")
+        Log.verbose(duplicates[0] + " (dupe of " + duplicates[1] + ")")
     else:
-        Log.log(duplicates[1])
+        Log.log(duplicates[0])
 
 
 # Return a list of files from filelist that are duplicates. For any group of
