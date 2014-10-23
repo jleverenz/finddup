@@ -5,10 +5,10 @@ import argparse
 from finddup import *
 from finddup_app import FinddupApp
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+parser = argparse.ArgumentParser(description='Find duplicate files.')
 parser.add_argument('dirs', nargs='*', default=["."],
-                    help='Directories to recursively search for duplicate files.')
+                    help='directories to recursively search for duplicate files')
 parser.add_argument('-v', '--verbose', action='store_true',
-                    help='Verbose output')
+                    help='verbose output')
 
 FinddupApp().run(parser.parse_args())
