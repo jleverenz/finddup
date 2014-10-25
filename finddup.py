@@ -6,31 +6,42 @@ import itertools
 import os
 import subprocess
 import sys
+import logging
 
 from math import factorial
 
-# Simple logging class to support verbosity log levels
-class Log():
-    is_verbose = False
-    of = sys.stdout
+# Class for sending output to either stdout or an output file, based on
+# configuration. This is where a list of duplicate filenames will be sent.
+class Output():
+    _out = None
+    def __init__(self, **kwargs):
+        self.printOut = sys.stdout
+        self.of = None
+        self.outputFile = None
+        if 'outputFile' in kwargs:
+            self.outputFile = kwargs['outputFile']
+        if self.outputFile:
+            self.of = open(self.outputFile, "w+")
+        Output._out = self
 
-    @classmethod
-    def setOutput(cls, of):
-        cls.of = of
+    def _log(self, msg):
+        if self.of:
+            self.of.write(msg + "\n")
+            self.of.flush()
+        else:
+            self.printOut.write(msg + "\n")
 
-    @classmethod
-    def verbose(cls, msg):
-        if cls.is_verbose:
-            cls.printl(msg)
+    def _close(self):
+        if self.of:
+            self.of.close()
 
-    @classmethod
-    def log(cls, msg):
-        cls.printl(msg)
+    @staticmethod
+    def log(msg):
+        Output._out._log(msg)
 
-    @classmethod
-    def printl(cls, msg):
-        cls.of.write(msg + "\n")
-        cls.of.flush()
+    @staticmethod
+    def close():
+        Output._out._close()
 
 class FileComparer:
 
@@ -54,14 +65,14 @@ class FileComparer:
             i += 1
             # Skip if the second has already been determined to be a duplicate
             if pair[1] in checked:
-                Log.verbose("Comparing ({}/{}): already identified as duplicate, skipping:".format(i,total))
-                Log.verbose("   " + pair[1])
-                Log.verbose("   " + pair[0])
+                logging.info("Comparing ({}/{}): already identified as duplicate, skipping:".format(i,total))
+                logging.info("   " + pair[1])
+                logging.info("   " + pair[0])
                 continue
 
-            Log.verbose("Comparing ({}/{}):".format(i,total))
-            Log.verbose("   " + pair[1])
-            Log.verbose("   " + pair[0])
+            logging.info("Comparing ({}/{}):".format(i,total))
+            logging.info("   " + pair[1])
+            logging.info("   " + pair[0])
             if self.__comparitor(pair[1], pair[0]):
                 duplicate_files.append((pair[1], pair[0])) # duplicate, and original
                 checked.append(pair[1])                    # track duplicates found
@@ -98,7 +109,7 @@ def groupBySize(filelist):
 
 # duplicate_original is a tuple with the duplicate listed first
 def outputDuplicateFile(duplicates):
-    Log.log(duplicates[0])
+    Output.log(duplicates[0])
 
 
 # combinations for small n,r
@@ -108,7 +119,7 @@ def nCr(n,r):
 # Return a list of files from filelist that are duplicates. For any group of
 # duplicate files, all but one will be included in the list
 def compareFiles(filelist):
-    Log.verbose(str(len(filelist)) + " files to be examined")
+    logging.info(str(len(filelist)) + " files to be examined")
 
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.
@@ -119,7 +130,7 @@ def compareFiles(filelist):
 
     duplicate_files = []
     for comp_files in files_to_compare:
-        Log.verbose("{} diffs left to complete".format(combinations))
+        logging.info("{} diffs left to complete".format(combinations))
         f = FileComparer(*comp_files)
         dupes = f.compare()
         duplicate_files += dupes

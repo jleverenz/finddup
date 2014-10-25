@@ -3,17 +3,18 @@ import argparse
 import StringIO
 import re
 
-from finddup import FileComparer, Log, outputDuplicateFile
+from finddup import FileComparer, Output, outputDuplicateFile
 from finddup_app import FinddupApp
 
 class TestOutput(unittest.TestCase):
     def test_outputDuplicateFile(self):
-        out = StringIO.StringIO()
-        Log.setOutput(out)
+        outputDest = StringIO.StringIO()
+        output = Output()
+        output.printOut = outputDest
         outputDuplicateFile(('file1', 'file2'))
 
         # output should reflect file1 (not file2), based on order
-        self.assertTrue(re.compile("file1").match( out.getvalue().strip() ))
+        self.assertTrue(re.compile("file1").match( outputDest.getvalue().strip() ))
 
 class TestFileComparer(unittest.TestCase):
     def testInitialization(self):
