@@ -2,8 +2,8 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 import argparse
-from finddup import *
-from finddup_app import FinddupApp
+from finddup import Output
+from finddup.app import App
 
 parser = argparse.ArgumentParser(description='Find duplicate files.')
 parser.add_argument('dirs', nargs='*', default=["."],
@@ -16,4 +16,4 @@ parser.add_argument('--output', default=None,
 import atexit
 atexit.register(Output.close)
 
-FinddupApp().run(parser.parse_args())
+App().run(parser.parse_args())

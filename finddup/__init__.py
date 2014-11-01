@@ -107,7 +107,7 @@ def groupBySize(filelist):
     return size_hash
 
 
-# duplicate_original is a tuple with the duplicate listed first
+# duplicates is a tuple with the duplicate listed first, and the original found second
 def outputDuplicateFile(duplicates):
     Output.log(duplicates[0])
 
