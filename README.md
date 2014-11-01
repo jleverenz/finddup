@@ -50,3 +50,5 @@ Run unit tests:
 * Add -0 support to list files with NULL delimiters (for xargs -0)
 * Protect against duplicates found between soft/hard links
 * Support operations like moving duplicates without clobbering same filenames?
+* Support continuing from last known comparison across process quits
+* Show percent complete progress based on bytes to diff
