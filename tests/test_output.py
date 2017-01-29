@@ -1,10 +1,10 @@
 from test_helper import *
-import StringIO
+import io
 import re
 
 class TestOutput(unittest.TestCase):
     def test_outputDuplicateFile(self):
-        outputDest = StringIO.StringIO()
+        outputDest = io.StringIO()
         output = Output()
         output.printOut = outputDest
         outputDuplicateFile(('file1', 'file2'))

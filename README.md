@@ -1,4 +1,4 @@
-**finddup** is a Python script that searches directories for duplicate files
+**finddup** is a Python3 script that searches directories for duplicate files
 using the filecmp module. It will print a list of files that have duplicates in
 the fileset, suitable for further action (e.g. use xargs to move/remove).
 

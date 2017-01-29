@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import logging
+from functools import reduce
 
 from math import factorial
 
@@ -93,7 +94,7 @@ def generateFileList(directories):
     rv = []
     for directory in directories:
         find_out = subprocess.check_output("find \"" + directory + "\" -type f -print0", shell=True)
-        rv += [i for i in find_out.strip().split("\0") if len(i) > 0]  # clean up, strip
+        rv += [i.decode(sys.stdout.encoding) for i in find_out.strip().split(b"\0") if len(i) > 0]  # clean up, strip
     return rv
 
 # Create a dict, where file size is the key, and a list of files of that size
@@ -126,7 +127,7 @@ def compareFiles(filelist):
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.
     sizegroup = groupBySize(filelist)
-    files_to_compare = [i[1] for i in sizegroup.iteritems() if len(i[1]) > 1]
+    files_to_compare = [i[1] for i in sizegroup.items() if len(i[1]) > 1]
 
     combinations = reduce(lambda a,i: a + nCr(len(i), 2), files_to_compare, 0)
 
