@@ -129,6 +129,9 @@ def compareFiles(filelist):
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.
     sizegroup = groupBySize(filelist)
+
+    # Iterate the hash size group and create a list of lists. Each list elmt is
+    # a list of files with matching sizes.
     files_to_compare = [i[1] for i in sizegroup.items() if len(i[1]) > 1]
 
     combinations = reduce(lambda a,i: a + nCr(len(i), 2), files_to_compare, 0)
