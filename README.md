@@ -16,8 +16,8 @@ Usage
 of directories to be a "priority" ordering for selecting original/duplicate
 pairs.  Files selected as original will be from earlier directories in the
 list, and duplicates from the latter directories if possible. Note that due to
-the underlying use of system 'find', that preference for original/duplicate
-listing within any one directory tree is non-deterministic.
+the underlying use of os.walk, the preference for original/duplicate files in
+any one directory tree is arbitrary.
 
 === Examples
 
@@ -46,7 +46,6 @@ Run unit tests:
 
 ### TODO
 
-* Replace find shell call with Python-only calls
 * Add -0 support to list files with NULL delimiters (for xargs -0)
 * Protect against duplicates found between soft/hard links
 * Support operations like moving duplicates without clobbering same filenames?

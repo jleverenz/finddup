@@ -88,13 +88,21 @@ class FileComparer:
     def defaultComparitor(file1, file2):
         return filecmp.cmp(file1, file2, shallow=False)
 
-# Use the shell 'find' command to search the input list of directories
-# recusrively, and generate a list of filenames.
+# Walk the input list of directories recusrively, and generate a list of
+# filenames.
 def generateFileList(directories):
     rv = []
+
+    # Reminder: os.walk does not guarantee order of files in any single
+    # directory. However, high level file list ordering is stable based on
+    # input 'directories' order.
+
+    # Reminder: by default, os.walk skip symlinks to directories
+
     for directory in directories:
-        find_out = subprocess.check_output("find \"" + directory + "\" -type f -print0", shell=True)
-        rv += [i.decode(sys.stdout.encoding) for i in find_out.strip().split(b"\0") if len(i) > 0]  # clean up, strip
+        for dirName, subdirList, fileList in os.walk(directory):
+            for fname in fileList:
+                rv.append(os.path.join(dirName, fname))
     return rv
 
 # Create a dict, where file size is the key, and a list of files of that size
