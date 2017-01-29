@@ -117,12 +117,6 @@ def groupBySize(filelist):
             size_hash[size] = [filename]
     return size_hash
 
-
-# duplicates is a tuple with the duplicate listed first, and the original found second
-def outputDuplicateFile(duplicates):
-    Output.log(duplicates[0])
-
-
 # combinations for small n,r
 def nCr(n,r):
     return factorial(n) / (factorial(r) * factorial(n-r))
@@ -145,7 +139,6 @@ def compareFiles(filelist):
         f = FileComparer(*comp_files)
         dupes = f.compare()
         duplicate_files += dupes
-        for i in dupes:
-            outputDuplicateFile(i)
         combinations -= nCr(len(comp_files), 2)
+
     return duplicate_files
