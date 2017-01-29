@@ -41,6 +41,8 @@ class Output():
 
     @staticmethod
     def close():
+        if Output._out == None:
+            return
         Output._out._close()
 
 class FileComparer:
