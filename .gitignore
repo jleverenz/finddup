@@ -1,1 +1,4 @@
 *.pyc
+
+# common virtualenv directory
+venv/
