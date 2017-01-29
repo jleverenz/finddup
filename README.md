@@ -29,7 +29,7 @@ Find duplicates recursively across a few directories (anywhere on filesystem):
 
         finddup dir1 dir2 /tmp/dir3
 
-Find duplicates, show duplicate pairs, and print a summary:
+Find duplicates, with verbose output:
 
         finddup -v dir1
 
@@ -56,5 +56,5 @@ Run unit tests:
 * Protect against duplicates found between soft/hard links
 * Support operations like moving duplicates without clobbering same filenames?
 * Support continuing from last known comparison across process quits
-* Show percent complete progress based on bytes to diff
+* Revisit progress method to avoid up-front calcuation; consider bytes, not just file count
 * Replace Output module with something more straightforward

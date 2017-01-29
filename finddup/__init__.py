@@ -9,8 +9,6 @@ import sys
 import logging
 from functools import reduce
 
-from math import factorial
-
 # Class for sending output to either stdout or an output file, based on
 # configuration. This is where a list of duplicate filenames will be sent.
 class Output():
@@ -62,20 +60,11 @@ class FileComparer:
 
         # For each pair, we are checking if the second is a duplicate of the
         # first. This maintains the original preference order.
-        i = 0
-        total = nCr(len(self.filelist), 2)
         for pair in pairs:
-            i += 1
             # Skip if the second has already been determined to be a duplicate
             if pair[1] in checked:
-                logging.info("Comparing ({}/{}): already identified as duplicate, skipping:".format(i,total))
-                logging.info("   " + pair[1])
-                logging.info("   " + pair[0])
                 continue
 
-            logging.info("Comparing ({}/{}):".format(i,total))
-            logging.info("   " + pair[1])
-            logging.info("   " + pair[0])
             if self.__comparitor(pair[1], pair[0]):
                 duplicate_files.append((pair[1], pair[0])) # duplicate, and original
                 checked.append(pair[1])                    # track duplicates found
@@ -117,10 +106,6 @@ def groupBySize(filelist):
             size_hash[size] = [filename]
     return size_hash
 
-# combinations for small n,r
-def nCr(n,r):
-    return factorial(n) / (factorial(r) * factorial(n-r))
-
 # Return a list of files from filelist that are duplicates. For any group of
 # duplicate files, all but one will be included in the list
 def compareFiles(filelist):
@@ -134,14 +119,10 @@ def compareFiles(filelist):
     # a list of files with matching sizes.
     files_to_compare = [i[1] for i in sizegroup.items() if len(i[1]) > 1]
 
-    combinations = reduce(lambda a,i: a + nCr(len(i), 2), files_to_compare, 0)
-
     duplicate_files = []
     for comp_files in files_to_compare:
-        logging.info("{} diffs left to complete".format(combinations))
         f = FileComparer(*comp_files)
         dupes = f.compare()
         duplicate_files += dupes
-        combinations -= nCr(len(comp_files), 2)
 
     return duplicate_files
