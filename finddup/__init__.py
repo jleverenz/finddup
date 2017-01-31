@@ -101,10 +101,10 @@ def generateFileList(directories):
     return rv
 
 # Create a dict, where file size is the key, and a list of files of that size
-# are the values, for all files provided in filelist.
-def groupBySize(filelist):
+# are the values, for all files provided in filepaths.
+def groupBySize(filepaths):
     size_hash = {}
-    for filename in filelist:
+    for filename in filepaths:
         size = os.stat(filename).st_size
         if(size in size_hash):
             size_hash[size].append(filename)
