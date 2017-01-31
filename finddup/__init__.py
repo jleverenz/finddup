@@ -77,9 +77,11 @@ class FileComparer:
     def defaultComparitor(file1, file2):
         return filecmp.cmp(file1, file2, shallow=False)
 
-# Walk the input list of directories recusrively, and generate a list of
-# filenames.
+
 def generateFileList(directories):
+    """Walk `directories` recursively and return a `list` of filenames
+    found.
+    """
     rv = []
 
     # Reminder: os.walk does not guarantee order of files in any single
@@ -100,9 +102,14 @@ def generateFileList(directories):
                 rv.append(os.path.join(dirpath, fname))
     return rv
 
-# Create a dict, where file size is the key, and a list of files of that size
-# are the values, for all files provided in filepaths.
+
 def groupBySize(filepaths):
+    """For all files provided, returns a `dict`, with file size as keys, and a list
+    of files of that size as values.
+
+    :param filepaths: iteratable collection of file paths to group
+    """
+
     size_hash = {}
     for filename in filepaths:
         size = os.stat(filename).st_size
@@ -112,9 +119,15 @@ def groupBySize(filepaths):
             size_hash[size] = [filename]
     return size_hash
 
-# Return a list of files from filelist that are duplicates. For any group of
-# duplicate files, all but one will be included in the list
+
 def compareFiles(filelist):
+    """Return a list of files from `filelist` that are duplicates.
+
+    The ordering of `filelist` is relevant. For any group of duplicate files, all
+    but the first to appear in `filelist` will be included in the returned
+    list.
+    """
+
     logging.info(str(len(filelist)) + " files to be examined")
 
     # Hash by file size and create files_to_compare, a list of lists of files
