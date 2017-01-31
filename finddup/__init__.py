@@ -88,10 +88,16 @@ def generateFileList(directories):
 
     # Reminder: by default, os.walk skip symlinks to directories
 
+    visited_directories = set()
+
     for directory in directories:
-        for dirName, subdirList, fileList in os.walk(directory):
-            for fname in fileList:
-                rv.append(os.path.join(dirName, fname))
+        if os.path.abspath(directory) in visited_directories:
+            continue
+        for dirpath, dirlist, filelist in os.walk(directory):
+            visited_directories.add(os.path.abspath(dirpath)) # TODO - repeatedly tries to add the visited dir?
+            dirlist[:] = [d for d in dirlist if os.path.abspath(d) not in visited_directories]
+            for fname in filelist:
+                rv.append(os.path.join(dirpath, fname))
     return rv
 
 # Create a dict, where file size is the key, and a list of files of that size
