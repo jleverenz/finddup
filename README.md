@@ -2,10 +2,9 @@
 using the filecmp module. It will print a list of files that have duplicates in
 the fileset, suitable for further action (e.g. use xargs to move/remove).
 
-*WARNING* This is a simple script that served some immediate needs, so use it
-with caution on any files/data that are important to you. Note that this script
-itself will not modify anything, but using the resulting output should be done
-with care.
+**WARNING** This should be considered _alpha_ software. Use it with caution on
+any files/data that are important to you. Note that this script itself will not
+modify anything, but using the resulting output should be done with care.
 
 Usage
 -----
@@ -35,7 +34,7 @@ Find duplicates, with verbose output:
 
 Get help:
 
-        finddup --help
+        finddup -h
 
 Development
 -----------
