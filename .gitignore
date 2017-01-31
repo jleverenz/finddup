@@ -1,4 +1,7 @@
 *.pyc
 
+# sphinx output
+_build/
+
 # common virtualenv directory
 venv/
