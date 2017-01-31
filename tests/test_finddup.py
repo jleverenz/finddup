@@ -1,26 +1,25 @@
 from test_helper import *
-import mock
 from collections import namedtuple
+from pyfakefs import fake_filesystem_unittest
 
 
-class TestCompareFiles(unittest.TestCase):
+class TestCompareFiles(fake_filesystem_unittest.TestCase):
 
-    def stat_mock(filename):
-        s = namedtuple("MockStat", ['st_size'])
-        s.st_size = 100
-        return s
+    def setUp(self):
+        self.setUpPyfakefs()
 
-    # Mock will always return a filesize of 100
-    @mock.patch('os.stat', side_effect=stat_mock)
-    def testGroupBySize(self, stat_function):
-        filelist = ["file1", "file2"]
+    def testGroupBySize(self):
+        self.fs.CreateFile("/test/file1", contents='abcdefg')
+        self.fs.CreateFile("/test/file2", contents='1234567')
+        filelist = ["/test/file1", "/test/file2"]
         size_hash = groupBySize(filelist)
-        self.assertEqual(list(size_hash.keys()), [100])
-        self.assertEqual(len(size_hash[100]), 2)
+        self.assertEqual(list(size_hash.keys()), [7])
+        self.assertEqual(len(size_hash[7]), 2)
 
-    # Mock will always return a filesize of 100, file2 as the duplicate
-    @mock.patch('finddup.FileComparer.compare', return_value=["file2"])
-    @mock.patch('os.stat', side_effect=stat_mock)
-    def testFileComparer(self, stat_function, compare_function):
-        compare_results = compareFiles(["file1", "file2"])
-        self.assertEqual(compare_results, ["file2"])
+    def testFileComparer(self):
+        self.fs.CreateFile("/test/file1", contents='abcdefg')
+        self.fs.CreateFile("/test/file2", contents='abcdefg')
+        filelist = ["/test/file1", "/test/file2"]
+
+        compare_results = compareFiles(filelist)
+        self.assertEqual(compare_results, [("/test/file2", "/test/file1")])

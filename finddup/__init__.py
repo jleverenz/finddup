@@ -48,42 +48,30 @@ class Output():
         Output._out._close()
 
 
-class FileComparer:
+def _defaultComparitor(file1, file2):
+    return filecmp.cmp(file1, file2, shallow=False)
 
-    def __init__(self, *args):
-        self.filelist = list(args)
-        self.__comparitor = FileComparer.defaultComparitor
 
-    def addFiles(self, *args):
-        self.filelist += args
+def compare(filelist, comparitor=_defaultComparitor):
+    checked = []
+    duplicate_files = []
+    pairs = itertools.combinations(filelist, 2)
 
-    def compare(self):
-        checked = []
-        duplicate_files = []
-        pairs = itertools.combinations(self.filelist, 2)
+    # For each pair, we are checking if the second is a duplicate of the
+    # first. This maintains the original preference order.
+    for pair in pairs:
+        # Skip if the second has already been determined to be a duplicate
+        if pair[1] in checked:
+            continue
 
-        # For each pair, we are checking if the second is a duplicate of the
-        # first. This maintains the original preference order.
-        for pair in pairs:
-            # Skip if the second has already been determined to be a duplicate
-            if pair[1] in checked:
-                continue
+        # (pair[1], pair[0]) = (duplicate, original)
+        if comparitor(pair[1], pair[0]):
+            duplicate_files.append((pair[1], pair[0]))
 
-            # (pair[1], pair[0]) = (duplicate, original)
-            if self.__comparitor(pair[1], pair[0]):
-                duplicate_files.append((pair[1], pair[0]))
+            # track duplicates found
+            checked.append(pair[1])
 
-                # track duplicates found
-                checked.append(pair[1])
-
-        return duplicate_files
-
-    def compareWith(self, method):
-        self.__comparitor = method
-
-    @staticmethod
-    def defaultComparitor(file1, file2):
-        return filecmp.cmp(file1, file2, shallow=False)
+    return duplicate_files
 
 
 def generateFileList(directories):
@@ -151,8 +139,6 @@ def compareFiles(filelist):
 
     duplicate_files = []
     for comp_files in files_to_compare:
-        f = FileComparer(*comp_files)
-        dupes = f.compare()
-        duplicate_files += dupes
+        duplicate_files += compare(comp_files)
 
     return duplicate_files
