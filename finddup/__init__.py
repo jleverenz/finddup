@@ -28,10 +28,10 @@ class Output():
 
     def _log(self, msg):
         if self.of:
-            self.of.write(msg + "\n")
+            self.of.write("{}\n".format(msg))
             self.of.flush()
         else:
-            self.printOut.write(msg + "\n")
+            self.printOut.write("{}\n".format(msg))
 
     def _close(self):
         if self.of:
@@ -127,7 +127,7 @@ def compareFiles(filelist):
     list.
     """
 
-    logging.info(str(len(filelist)) + " files to be examined")
+    logging.info("{} files to be examined".format(len(list(filelist))))
 
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.

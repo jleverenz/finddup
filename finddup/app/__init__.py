@@ -17,5 +17,5 @@ class App():
         for i in duplicate_pairs:
             Output.log(i[0])
 
-        logging.info(str(len(filelist)) + " files examined")
-        logging.info(str(len(duplicate_pairs)) + " duplicates found")
+        logging.info("{} files examined".format(len(filelist)))
+        logging.info("{} duplicates found".format(len(duplicate_pairs)))
