@@ -40,15 +40,17 @@ Get help:
 Development
 -----------
 
+A Makefile is provided for some common tasks.
+
 Environment:
 
         virtualenv -p python3 venv
         source ./venv/bin/activate
-        pip install -r requirements.txt
+        make deps
 
-Run unit tests:
+Unit tests:
 
-        python -m unittest discover tests/
+        make test
 
 ### TODO
 
