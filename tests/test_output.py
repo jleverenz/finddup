@@ -8,7 +8,7 @@ class TestOutput(unittest.TestCase):
         outputDest = io.StringIO()
         output = Output()
         output.printOut = outputDest
-        outputDuplicateFile(('file1', 'file2'))
+        Output.log("a message")
 
-        # output should reflect file1 (not file2), based on order
-        self.assertTrue(re.compile("file1").match( outputDest.getvalue().strip() ))
+        # check that output was captured
+        self.assertTrue(outputDest.getvalue().strip(), "a message")
