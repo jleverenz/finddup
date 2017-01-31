@@ -1,6 +1,7 @@
 from finddup import *
 import logging
 
+
 class App():
     @staticmethod
     def run(args):

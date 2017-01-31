@@ -1,7 +1,7 @@
 from test_helper import *
 import mock
-
 from pyfakefs import fake_filesystem_unittest
+
 
 class TestGeneratedFiles(fake_filesystem_unittest.TestCase):
 
@@ -12,7 +12,9 @@ class TestGeneratedFiles(fake_filesystem_unittest.TestCase):
         self.fs.CreateFile('/test/file.txt')
 
         filelist = generateFileList(['test', 'test'])
-        self.assertEqual(filelist, ['test/file.txt']) # should only collect file once
+
+        # should only collect file once
+        self.assertEqual(filelist, ['test/file.txt'])
 
     def testOverlappingSubDirectorySources(self):
         self.fs.CreateFile('/test/file.txt')

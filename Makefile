@@ -13,6 +13,7 @@ deps:
 
 test:
 	python -m unittest discover tests/
+	pep8 finddup/ bin/ tests/
 
 html:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

@@ -3,6 +3,7 @@ import io
 import re
 from finddup.app import *
 
+
 class TestOutput(unittest.TestCase):
     def test_outputDuplicateFile(self):
         outputDest = io.StringIO()

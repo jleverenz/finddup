@@ -2,6 +2,7 @@ from test_helper import *
 import mock
 from collections import namedtuple
 
+
 class TestCompareFiles(unittest.TestCase):
 
     def stat_mock(filename):

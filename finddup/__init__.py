@@ -9,10 +9,13 @@ import sys
 import logging
 from functools import reduce
 
-# Class for sending output to either stdout or an output file, based on
-# configuration. This is where a list of duplicate filenames will be sent.
+
 class Output():
+    """Class for sending output to either stdout or an output file, based on
+    configuration. This is where a list of duplicate filenames will be sent.
+    """
     _out = None
+
     def __init__(self, **kwargs):
         self.printOut = sys.stdout
         self.of = None
@@ -40,9 +43,10 @@ class Output():
 
     @staticmethod
     def close():
-        if Output._out == None:
+        if Output._out is None:
             return
         Output._out._close()
+
 
 class FileComparer:
 
@@ -65,9 +69,13 @@ class FileComparer:
             if pair[1] in checked:
                 continue
 
+            # (pair[1], pair[0]) = (duplicate, original)
             if self.__comparitor(pair[1], pair[0]):
-                duplicate_files.append((pair[1], pair[0])) # duplicate, and original
-                checked.append(pair[1])                    # track duplicates found
+                duplicate_files.append((pair[1], pair[0]))
+
+                # track duplicates found
+                checked.append(pair[1])
+
         return duplicate_files
 
     def compareWith(self, method):
@@ -96,8 +104,11 @@ def generateFileList(directories):
         if os.path.abspath(directory) in visited_directories:
             continue
         for dirpath, dirlist, filelist in os.walk(directory):
-            visited_directories.add(os.path.abspath(dirpath)) # TODO - repeatedly tries to add the visited dir?
-            dirlist[:] = [d for d in dirlist if os.path.abspath(d) not in visited_directories]
+            # TODO - repeatedly tries to add the visited dir?
+            visited_directories.add(os.path.abspath(dirpath))
+            dirlist[:] = [d for d in dirlist
+                          if os.path.abspath(d) not in visited_directories]
+
             for fname in filelist:
                 rv.append(os.path.join(dirpath, fname))
     return rv
@@ -123,8 +134,8 @@ def groupBySize(filepaths):
 def compareFiles(filelist):
     """Return a list of files from `filelist` that are duplicates.
 
-    The ordering of `filelist` is relevant. For any group of duplicate files, all
-    but the first to appear in `filelist` will be included in the returned
+    The ordering of `filelist` is relevant. For any group of duplicate files,
+    all but the first to appear in `filelist` will be included in the returned
     list.
     """
 

@@ -1,5 +1,6 @@
 from test_helper import *
 
+
 class TestFileComparer(unittest.TestCase):
 
     @staticmethod
@@ -37,4 +38,6 @@ class TestFileComparer(unittest.TestCase):
     def testCompareWithMultipleMatches(self):
         self.f.addFiles('dir/file1', 'dir/file2', 'copy/file1', 'other/file1')
         dups = self.f.compare()
-        self.assertEqual(dups, [('copy/file1', 'dir/file1'), ('other/file1', 'dir/file1')])
+
+        self.assertEqual(dups, [('copy/file1', 'dir/file1'),
+                                ('other/file1', 'dir/file1')])
