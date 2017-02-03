@@ -5,3 +5,6 @@ _build/
 
 # common virtualenv directory
 venv/
+
+# pyenv
+.python-version
