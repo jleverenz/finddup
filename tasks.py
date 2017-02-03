@@ -5,7 +5,7 @@ from invoke import task, run
 @task
 def test(ctx):
     ctx.run("python -m unittest discover tests/")
-    ctx.run("pep8 finddup/ bin/ tests/")
+    ctx.run("pep8 finddup/ tests/")
 
 @task
 def html(ctx, live=False):
