@@ -1,4 +1,5 @@
 *.pyc
+.tox/
 
 # sphinx output
 _build/

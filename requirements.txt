@@ -4,6 +4,7 @@ pep8==1.7.0
 pyfakefs==2.9
 Sphinx==1.5.2
 sphinx-autobuild==0.6.0
+tox==2.5.0
 
 # appdirs==1.4.0
 # packaging==16.8
