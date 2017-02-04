@@ -31,7 +31,8 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
 
-    parser = argparse.ArgumentParser(description='Find duplicate files.')
+    parser = argparse.ArgumentParser(prog='finddup',
+                                     description='Find duplicate files.')
     parser.add_argument('dirs', nargs='+',
                         help='directories to recursively search for '
                         'duplicate files')
