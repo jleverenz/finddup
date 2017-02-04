@@ -1,5 +1,7 @@
-from test_helper import *
 import io
+
+from test_helper import *
+from finddup.output import Output
 
 
 class TestOutput(unittest.TestCase):

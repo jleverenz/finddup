@@ -5,6 +5,7 @@ import atexit
 import logging
 
 from finddup import *
+from finddup.output import Output
 
 logger = logging.getLogger('finddup')
 
