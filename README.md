@@ -39,17 +39,23 @@ Get help:
 Development
 -----------
 
-A Makefile is provided for some common tasks.
+'invoke' is used for common tasks.
 
 Environment:
 
         virtualenv -p python3 venv
         source ./venv/bin/activate
-        make deps
+        pip install -r requirements.txt
 
 Unit tests:
 
-        make test
+        invoke test
+
+Also:
+
+        tox
+        invoke html       # sphinx docs
+        invoke html -l    # sphinx-autobuild
 
 ### TODO
 
