@@ -6,6 +6,8 @@ import logging
 
 from finddup import *
 
+logger = logging.getLogger('finddup')
+
 
 class App():
     @staticmethod
@@ -22,8 +24,8 @@ class App():
         for i in duplicate_pairs:
             Output.log(i[0])
 
-        logging.info("{} files examined".format(len(filelist)))
-        logging.info("{} duplicates found".format(len(duplicate_pairs)))
+        logger.info("{} files examined".format(len(filelist)))
+        logger.info("{} duplicates found".format(len(duplicate_pairs)))
 
 
 def main(args=None):

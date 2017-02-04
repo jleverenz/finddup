@@ -9,6 +9,8 @@ import sys
 import logging
 from functools import reduce
 
+logger = logging.getLogger('finddup')
+
 
 class Output():
     """Class for sending output to either stdout or an output file, based on
@@ -127,7 +129,7 @@ def compareFiles(filelist):
     list.
     """
 
-    logging.info("{} files to be examined".format(len(list(filelist))))
+    logger.info("{} files to be examined".format(len(list(filelist))))
 
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.
