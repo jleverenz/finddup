@@ -63,8 +63,10 @@ def generate_filelist(directories):
 
 
 def group_by_size(filepaths):
-    """For all files provided, returns a `dict`, with file size as keys, and a list
-    of files of that size as values.
+    """Group `filepaths` into a `dict` keyed on filesize.
+
+    For all files provided, returns a `dict`, with file size as keys, and a
+    list of files of that size as values.
 
     :param filepaths: iteratable collection of file paths to group
     """
