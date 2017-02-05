@@ -13,7 +13,7 @@ class TestOutput(fake_filesystem_unittest.TestCase):
         # TODO - hack internals to reset Output. Investigate better method.
         finddup.output._of = finddup.output._old_stdout = None
 
-    def test_outputDuplicateFile(self):
+    def test_output_redirection(self):
         output.redirect("output.txt")
         print("a message")
         output.use_default()

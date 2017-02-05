@@ -7,7 +7,7 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
     def setUp(self):
         self.setUpPyfakefs()
 
-    def testCompareNoDuplicates(self):
+    def test_compare_no_duplicates(self):
         self.fs.CreateFile('/test/file1.txt', contents='file1')
         self.fs.CreateFile('/test/file2.txt', contents='file2')
         self.fs.CreateFile('/test/file3.txt', contents='file3')
@@ -18,7 +18,7 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
         dups = compare(filelist)
         self.assertEqual(dups, [])
 
-    def testCompareOneDuplicate(self):
+    def test_compare_one_duplicate(self):
         self.fs.CreateFile('/test/file1.txt', contents='file1')
         self.fs.CreateFile('/test/file2.txt', contents='file2')
         self.fs.CreateFile('/copy/file1.txt', contents='file1')
@@ -29,7 +29,7 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
         dups = compare(filelist)
         self.assertEqual(dups, [('/copy/file1.txt', '/test/file1.txt')])
 
-    def testCompareWithMultipleMatches(self):
+    def test_compare_with_multiple_matches(self):
         self.fs.CreateFile('/test/file1.txt', contents='file1')
         self.fs.CreateFile('/test/file2.txt', contents='file2')
         self.fs.CreateFile('/copy/file1.txt', contents='file1')

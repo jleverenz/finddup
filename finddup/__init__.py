@@ -8,11 +8,11 @@ import os
 logger = logging.getLogger('finddup')
 
 
-def _defaultComparitor(file1, file2):
+def _default_comparitor(file1, file2):
     return filecmp.cmp(file1, file2, shallow=False)
 
 
-def compare(filelist, comparitor=_defaultComparitor):
+def compare(filelist, comparitor=_default_comparitor):
     checked = []
     duplicate_files = []
     pairs = itertools.combinations(filelist, 2)
@@ -34,7 +34,7 @@ def compare(filelist, comparitor=_defaultComparitor):
     return duplicate_files
 
 
-def generateFileList(directories):
+def generate_filelist(directories):
     """Walk `directories` recursively and return a `list` of filenames
     found.
     """
@@ -62,7 +62,7 @@ def generateFileList(directories):
     return rv
 
 
-def groupBySize(filepaths):
+def group_by_size(filepaths):
     """For all files provided, returns a `dict`, with file size as keys, and a list
     of files of that size as values.
 
@@ -79,7 +79,7 @@ def groupBySize(filepaths):
     return size_hash
 
 
-def compareFiles(filelist):
+def compare_files(filelist):
     """Return a list of files from `filelist` that are duplicates.
 
     The ordering of `filelist` is relevant. For any group of duplicate files,
@@ -91,7 +91,7 @@ def compareFiles(filelist):
 
     # Hash by file size and create files_to_compare, a list of lists of files
     # with the same size.
-    sizegroup = groupBySize(filelist)
+    sizegroup = group_by_size(filelist)
 
     # Iterate the hash size group and create a list of lists. Each list elmt is
     # a list of files with matching sizes.

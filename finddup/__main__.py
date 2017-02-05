@@ -20,8 +20,8 @@ class App():
             logging.basicConfig(level=logging.INFO)
 
         # Generate filelist and run duplicate detector
-        filelist = generateFileList(args.dirs)
-        duplicate_pairs = compareFiles(filelist)
+        filelist = generate_filelist(args.dirs)
+        duplicate_pairs = compare_files(filelist)
 
         for i in duplicate_pairs:
             print(i[0])
