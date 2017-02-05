@@ -60,6 +60,5 @@ Also:
 ### TODO
 
 * Add -0 support to list files with NULL delimiters (for xargs -0)
-* Protect against duplicates found between soft/hard links
 * Support continuing from last known comparison across process quits
 * Revisit progress method to avoid up-front calcuation; consider bytes, not just file count

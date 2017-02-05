@@ -48,6 +48,8 @@ def generate_filelist(directories):
 
     visited_directories = set()
 
+    # NOTE os.walk `followlinks` default is False, will not descend into
+    # directory links
     for directory in directories:
         if os.path.abspath(directory) in visited_directories:
             continue
@@ -57,7 +59,8 @@ def generate_filelist(directories):
             dirlist[:] = [d for d in dirlist
                           if os.path.abspath(d) not in visited_directories]
 
-            for fname in filelist:
+            for fname in [f for f in filelist
+                          if not os.path.islink(os.path.join(dirpath, f))]:
                 rv.append(os.path.join(dirpath, fname))
     return rv
 
@@ -81,6 +84,24 @@ def group_by_size(filepaths):
     return size_hash
 
 
+def _filter_hard_links(filelist):
+    """
+    Return a new list from filelist with any files detected as hard
+    links removed. Order is preserved.
+
+    Hard links are defined as files with equal st_dev and st_ino stats.
+    """
+    visited = set()
+    updated = list()
+    for fname in filelist:
+        st = os.stat(fname)
+        key = (st.st_dev, st.st_ino)
+        if key not in visited:
+            visited.add(key)
+            updated.append(fname)
+    return updated
+
+
 def compare_files(filelist):
     """Return a list of files from `filelist` that are duplicates.
 
@@ -91,9 +112,9 @@ def compare_files(filelist):
 
     logger.info("{} files to be examined".format(len(list(filelist))))
 
-    # Hash by file size and create files_to_compare, a list of lists of files
-    # with the same size.
-    sizegroup = group_by_size(filelist)
+    # Hash by file size and remove any hard links found.
+    sizegroup = dict([(k, _filter_hard_links(v))
+                      for (k, v) in group_by_size(filelist).items()])
 
     # Iterate the hash size group and create a list of lists. Each list elmt is
     # a list of files with matching sizes.
