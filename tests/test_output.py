@@ -1,15 +1,20 @@
-import io
+from pyfakefs import fake_filesystem_unittest
 
 from test_helper import *
-from finddup.output import Output
+from finddup import output
 
 
-class TestOutput(unittest.TestCase):
+class TestOutput(fake_filesystem_unittest.TestCase):
+
+    def setUp(self):
+        self.setUpPyfakefs()
+
     def test_outputDuplicateFile(self):
-        outputDest = io.StringIO()
-        output = Output()
-        output.printOut = outputDest
-        Output.log("a message")
+        output.redirect("output.txt")
+        print("a message")
+        output.use_default()
 
         # check that output was captured
-        self.assertTrue(outputDest.getvalue().strip(), "a message")
+        with open('output.txt') as x:
+            actual = x.read().strip()
+        self.assertEqual(actual, "a message")

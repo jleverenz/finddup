@@ -5,7 +5,7 @@ import atexit
 import logging
 
 from finddup import *
-from finddup.output import Output
+import finddup.output
 
 logger = logging.getLogger('finddup')
 
@@ -13,7 +13,8 @@ logger = logging.getLogger('finddup')
 class App():
     @staticmethod
     def run(args):
-        Output(outputFile=args.output)
+        if args.output:
+            finddup.output.redirect(args.output)
 
         if args.verbose:
             logging.basicConfig(level=logging.INFO)
@@ -23,7 +24,7 @@ class App():
         duplicate_pairs = compareFiles(filelist)
 
         for i in duplicate_pairs:
-            Output.log(i[0])
+            print(i[0])
 
         logger.info("{} files examined".format(len(filelist)))
         logger.info("{} duplicates found".format(len(duplicate_pairs)))
@@ -44,7 +45,7 @@ def main(args=None):
     parser.add_argument('--output', default=None,
                         help='output file for list of duplicate files')
 
-    atexit.register(Output.close)
+    atexit.register(finddup.output.use_default)
 
     App().run(parser.parse_args())
 
