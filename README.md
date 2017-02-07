@@ -19,7 +19,8 @@ list, and duplicates from the latter directories if possible. Note that due to
 the underlying use of os.walk, the preference for original/duplicate files in
 any one directory tree is arbitrary.
 
-=== Examples
+Examples
+--------
 
 Find duplicates recursively in current directory:
 
