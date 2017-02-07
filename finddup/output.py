@@ -15,6 +15,7 @@ _old_stdout = None
 def redirect(filename):
     """Open `filename` for appending, and redirect stdout to it."""
     global _of, _old_stdout
+    assert ((_of is None) and (_old_stdout is None))
     _old_stdout = sys.stdout    # store original stdout
     _of = open(filename, "w+")
     sys.stdout = _of
@@ -26,3 +27,4 @@ def use_default():
     if _of is not None:
         _of.close()
         sys.stdout = _old_stdout
+        _of = _old_stdout = None
