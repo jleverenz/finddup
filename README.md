@@ -59,7 +59,8 @@ Also:
         invoke html       # sphinx docs
         invoke html -l    # sphinx-autobuild
 
-### TODO
+TODO
+----
 
 * Add -0 support to list files with NULL delimiters (for xargs -0)
 * Support continuing from last known comparison across process quits
