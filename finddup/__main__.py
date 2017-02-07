@@ -10,30 +10,8 @@ import finddup.output
 logger = logging.getLogger('finddup')
 
 
-class App():
-    @staticmethod
-    def run(args):
-        if args.output:
-            finddup.output.redirect(args.output)
-
-        if args.verbose:
-            logging.basicConfig(level=logging.INFO)
-
-        # Generate filelist and run duplicate detector
-        filelist = generate_filelist(args.dirs)
-        duplicate_pairs = compare_files(filelist)
-
-        for i in duplicate_pairs:
-            print(i[0])
-
-        logger.info("{} files examined".format(len(filelist)))
-        logger.info("{} duplicates found".format(len(duplicate_pairs)))
-
-
-def main(args=None):
-    """Main entry point for the `finddup` script."""
-    if args is None:
-        args = sys.argv[1:]
+def _parse_args():
+    """Parse sys.argv command line options."""
 
     parser = argparse.ArgumentParser(prog='finddup',
                                      description='Find duplicate files.')
@@ -44,10 +22,30 @@ def main(args=None):
                         help='verbose output')
     parser.add_argument('--output', default=None,
                         help='output file for list of duplicate files')
+    return parser.parse_args()
 
-    atexit.register(finddup.output.use_default)
 
-    App().run(parser.parse_args())
+def main():
+    """Main entry point for the `finddup` script."""
+
+    atexit.register(finddup.output.use_default)  # Close output on exit
+    args = _parse_args()
+
+    if args.output:
+        finddup.output.redirect(args.output)
+
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+
+    # Generate filelist and run duplicate detector
+    filelist = generate_filelist(args.dirs)
+    duplicate_pairs = compare_files(filelist)
+
+    for i in duplicate_pairs:
+        print(i[0])
+
+    logger.info("{} files examined".format(len(filelist)))
+    logger.info("{} duplicates found".format(len(duplicate_pairs)))
 
 
 if __name__ == "__main__":
