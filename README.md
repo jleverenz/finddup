@@ -1,6 +1,7 @@
 **finddup** is a Python3 script that searches directories for duplicate files
-using the filecmp module. It will print a list of files that have duplicates in
-the fileset, suitable for further action (e.g. use xargs to move/remove).
+using the filecmp module. It will print a list of files are duplicates of an
+'original' copy. Note that only the duplicates (not the 'original') are output,
+making the list suitable for further action (e.g. use xargs to move/remove).
 
 **WARNING** This should be considered _alpha_ software. Use it with caution on
 any files/data that are important to you. Note that this script itself will not
