@@ -63,3 +63,4 @@ Also:
 * Add -0 support to list files with NULL delimiters (for xargs -0)
 * Support continuing from last known comparison across process quits
 * Revisit progress method to avoid up-front calcuation; consider bytes, not just file count
+* Add -i (or similar) switch to ignore directories / regexps?
