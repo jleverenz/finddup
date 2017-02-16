@@ -24,8 +24,8 @@ def compare(filelist, comparitor=_default_comparitor):
         if pair[1] in checked:
             continue
 
-        # (pair[1], pair[0]) = (duplicate, original)
-        if comparitor(pair[1], pair[0]):
+        # (pair[0], pair[1]) = (original, duplicate)
+        if comparitor(pair[0], pair[1]):
             duplicate_files.append((pair[1], pair[0]))
 
             # track duplicates found
