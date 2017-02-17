@@ -20,6 +20,9 @@ def _parse_args():
                         'duplicate files')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='verbose output')
+    parser.add_argument('-m', '--mark', action='store_true',
+                        help='marked (annotated) output, '
+                             'showing originals and dupes')
     parser.add_argument('--output', default=None,
                         help='output file for list of duplicate files')
     return parser.parse_args()
@@ -41,9 +44,15 @@ def main():
     filelist = generate_filelist(args.dirs)
     duplicate_pairs = compare_files(filelist)
 
-    for k, v in duplicate_pairs.items():
-        for i in v:
-            print(i)
+    if args.mark:
+        for k, v in duplicate_pairs.items():
+            print("o {}".format(k))
+            for i in v:
+                print("d {}".format(i))
+    else:
+        for k, v in duplicate_pairs.items():
+            for i in v:
+                print(i)
 
     logger.info("{} files examined".format(len(filelist)))
     logger.info("{} duplicates found".format(len(duplicate_pairs)))
