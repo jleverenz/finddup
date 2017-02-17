@@ -30,7 +30,7 @@ class TestGeneratedFiles(fake_filesystem_unittest.TestCase):
         filelist = generate_filelist(['test'])
 
         compare_results = compare_files(filelist)
-        self.assertEqual(compare_results, [])
+        self.assertEqual(compare_results, {})
 
     # NOTE decision to handle hard links as non-duplicates. Not clear if user
     # would expect them to be highlighted as duplicates or not, so assume
@@ -41,4 +41,4 @@ class TestGeneratedFiles(fake_filesystem_unittest.TestCase):
         filelist = generate_filelist(['test'])
 
         compare_results = compare_files(filelist)
-        self.assertEqual(compare_results, [])
+        self.assertEqual(compare_results, {})

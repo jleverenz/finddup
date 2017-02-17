@@ -16,7 +16,7 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
                     '/test/file2.txt',
                     '/test/file3.txt']
         dups = compare(filelist)
-        self.assertEqual(dups, [])
+        self.assertEqual(dups, {})
 
     def test_compare_one_duplicate(self):
         self.fs.CreateFile('/test/file1.txt', contents='file1')
@@ -27,7 +27,7 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
                     '/test/file2.txt',
                     '/copy/file1.txt']
         dups = compare(filelist)
-        self.assertEqual(dups, [('/copy/file1.txt', '/test/file1.txt')])
+        self.assertEqual(dups, {'/test/file1.txt': ['/copy/file1.txt']})
 
     def test_compare_with_multiple_matches(self):
         self.fs.CreateFile('/test/file1.txt', contents='file1')
@@ -41,5 +41,5 @@ class TestFileComparer(fake_filesystem_unittest.TestCase):
                     '/other/file1.txt']
         dups = compare(filelist)
 
-        self.assertEqual(dups, [('/copy/file1.txt', '/test/file1.txt'),
-                                ('/other/file1.txt', '/test/file1.txt')])
+        expected = {'/test/file1.txt': ['/copy/file1.txt', '/other/file1.txt']}
+        self.assertEqual(dups, expected)

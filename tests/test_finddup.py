@@ -22,4 +22,4 @@ class TestCompareFiles(fake_filesystem_unittest.TestCase):
         filelist = ["/test/file1", "/test/file2"]
 
         compare_results = compare_files(filelist)
-        self.assertEqual(compare_results, [("/test/file2", "/test/file1")])
+        self.assertEqual(compare_results, {"/test/file1": ["/test/file2"]})

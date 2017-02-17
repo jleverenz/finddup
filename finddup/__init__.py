@@ -13,8 +13,16 @@ def _default_comparitor(file1, file2):
 
 
 def compare(filelist, comparitor=_default_comparitor):
+    """Compare all files in `filelist` and return a dictionary of results.
+
+    :param filelist: list of file paths to compare
+    :param comparitor: function to use to compare two files
+
+    Return value is a dictionary. Each key is the filepath of an original file,
+    the value a list of filepaths that are duplicated of that original.
+    """
     checked = []
-    duplicate_files = []
+    duplicate_files = dict()  # map of original to duplicates
     pairs = itertools.combinations(filelist, 2)
 
     # For each pair, we are checking if the second is a duplicate of the
@@ -26,7 +34,9 @@ def compare(filelist, comparitor=_default_comparitor):
 
         # (pair[0], pair[1]) = (original, duplicate)
         if comparitor(pair[0], pair[1]):
-            duplicate_files.append((pair[1], pair[0]))
+            if(pair[0] not in duplicate_files):
+                duplicate_files[pair[0]] = []
+            duplicate_files[pair[0]].append(pair[1])
 
             # track duplicates found
             checked.append(pair[1])
@@ -120,8 +130,8 @@ def compare_files(filelist):
     # a list of files with matching sizes.
     files_to_compare = [i[1] for i in sizegroup.items() if len(i[1]) > 1]
 
-    duplicate_files = []
+    duplicate_files = dict()
     for comp_files in files_to_compare:
-        duplicate_files += compare(comp_files)
+        duplicate_files.update(compare(comp_files))
 
     return duplicate_files

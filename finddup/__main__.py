@@ -41,8 +41,9 @@ def main():
     filelist = generate_filelist(args.dirs)
     duplicate_pairs = compare_files(filelist)
 
-    for i in duplicate_pairs:
-        print(i[0])
+    for k, v in duplicate_pairs.items():
+        for i in v:
+            print(i)
 
     logger.info("{} files examined".format(len(filelist)))
     logger.info("{} duplicates found".format(len(duplicate_pairs)))
